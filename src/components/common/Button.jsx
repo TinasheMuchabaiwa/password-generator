@@ -1,6 +1,15 @@
 import React from 'react';
 import clsx from 'clsx';
 
+/**
+ * Button component with hover and active states
+ * @param {Object} props
+ * @param {string} props.children - Button content
+ * @param {function} props.onClick - Click handler
+ * @param {string} props.variant - Button style variant ('primary' | 'secondary')
+ * @param {boolean} props.fullWidth - Whether button should take full width
+ */
+
 const Button = ({ 
   children, 
   onClick, 
