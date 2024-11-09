@@ -1,6 +1,13 @@
 import React from 'react';
 import clsx from 'clsx';
 
+/**
+ * Custom checkbox component with styling matching the design
+ * @param {Object} props
+ * @param {string} props.label - Checkbox label
+ * @param {boolean} props.checked - Checkbox state
+ * @param {function} props.onChange - Change handler
+ */
 const Checkbox = ({ label, checked, onChange, className }) => {
   return (
     <label className={clsx('flex items-center cursor-pointer group', className)}>
