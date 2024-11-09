@@ -1,6 +1,14 @@
 import React from 'react';
 import clsx from 'clsx';
 
+/**
+ * Custom range slider with styling matching the design
+ * @param {Object} props
+ * @param {number} props.value - Current value
+ * @param {function} props.onChange - Change handler
+ * @param {number} props.min - Minimum value
+ * @param {number} props.max - Maximum value
+ */
 const Slider = ({
   value,
   onChange,
