@@ -58,3 +58,18 @@ export const checkPasswordPwned = async (password) => {
     };
   }
 };
+
+// Timing attack prevention
+export const secureClipboardCopy = async (text) => {
+  // Add random delay to mask timing
+  const delay = Math.random() * 100 + 50;
+  await new Promise(resolve => setTimeout(resolve, delay));
+  
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (error) {
+    console.error('Copy failed:', error);
+    return false;
+  }
+};
