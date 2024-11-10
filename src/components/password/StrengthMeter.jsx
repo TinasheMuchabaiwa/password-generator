@@ -10,11 +10,11 @@ const StrengthMeter = ({ strength }) => {
   const strengthLevels = {
     'EMPTY': {
       bars: 4,
-      color: 'bg-grey opacity-25' // Dimmed bars for empty state
+      color: 'border-white'
     },
     'TOO WEAK': {
       bars: 1,
-      color: 'bg-strength-red'
+      color: 'bg-strength-red border-white'
     },
     'WEAK': {
       bars: 2,
@@ -47,7 +47,7 @@ const StrengthMeter = ({ strength }) => {
   };
 
   return (
-    <div className="bg-very-dark p-6 mt-8 flex items-center justify-between">
+    <div className="bg-very-dark p-4 mt-1 text-2xl flex items-center justify-between">
       <div className="flex items-center gap-4">
         <span className="font-mono text-white uppercase">
           {strength === 'EMPTY' ? '' : strength}
