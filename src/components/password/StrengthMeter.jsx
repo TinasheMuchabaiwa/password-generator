@@ -4,10 +4,14 @@ import clsx from 'clsx';
 /**
  * Visual indicator of password strength
  * @param {Object} props
- * @param {string} props.strength - Password strength ('TOO WEAK' | 'WEAK' | 'MEDIUM' | 'STRONG')
+ * @param {string} props.strength - Password strength ('EMPTY' | 'TOO WEAK' | 'WEAK' | 'MEDIUM' | 'STRONG')
  */
 const StrengthMeter = ({ strength }) => {
   const strengthLevels = {
+    'EMPTY': {
+      bars: 4,
+      color: 'bg-grey opacity-25' // Dimmed bars for empty state
+    },
     'TOO WEAK': {
       bars: 1,
       color: 'bg-strength-red'
@@ -26,7 +30,7 @@ const StrengthMeter = ({ strength }) => {
     }
   };
 
-  const currentLevel = strengthLevels[strength];
+  const currentLevel = strengthLevels[strength] || strengthLevels['EMPTY'];
 
   const renderBars = () => {
     return Array(4).fill(null).map((_, index) => (
@@ -44,9 +48,10 @@ const StrengthMeter = ({ strength }) => {
 
   return (
     <div className="bg-very-dark p-6 mt-8 flex items-center justify-between">
-      <span className="text-grey font-mono uppercase">STRENGTH</span>
       <div className="flex items-center gap-4">
-        <span className="font-mono text-white uppercase">{strength}</span>
+        <span className="font-mono text-white uppercase">
+          {strength === 'EMPTY' ? '' : strength}
+        </span>
         <div className="flex gap-2">
           {renderBars()}
         </div>
