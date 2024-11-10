@@ -2,15 +2,11 @@ import React, { useState, useCallback } from 'react';
 import PasswordDisplay from './PasswordDisplay';
 import PasswordOptions from './PasswordOptions';
 import StrengthMeter from './StrengthMeter';
-import Button from '../common/Button';
 import { generatePassword } from '../../utils/GeneratePassword';
 import { calculateStrength } from '../../utils/CalculateStrength';
 
-/**
- * Main password generator container component
- */
 const PasswordGenerator = () => {
-  const [password, setPassword] = useState('PTx1f5DaFX');
+  const [password, setPassword] = useState('P4$5W0rD');
   const [copied, setCopied] = useState(false);
   const [options, setOptions] = useState({
     length: 10,
@@ -32,47 +28,48 @@ const PasswordGenerator = () => {
     setCopied(false);
   };
 
-  const strength = calculateStrength(password, options);
+  const strength = password === 'P4$5W0rD' ? 'EMPTY' : calculateStrength(password, options);
 
   return (
-    <div className="max-w-lg mx-auto px-4 py-8">
-      <h1 className="text-grey text-center font-mono text-2xl mb-8">
-        Password Generator
-      </h1>
-
-      <PasswordDisplay
+    <div className="w-full">
+      <PasswordDisplay 
         password={password}
         onCopy={handleCopy}
         copied={copied}
       />
 
-      <PasswordOptions
-        options={options}
-        onOptionsChange={setOptions}
-      />
+      <div className="bg-dark-grey p-5">
+        <PasswordOptions
+          options={options}
+          onOptionsChange={setOptions}
+        />
 
-      <StrengthMeter strength={strength} />
+        <div className="mt-8 bg-very-dark p-4 flex items-center justify-between">
+          <span className="text-grey font-mono uppercase text-base">STRENGTH</span>
+          <StrengthMeter strength={strength} />
+        </div>
 
-      <Button
-        onClick={handleGenerate}
-        fullWidth
-        className="mt-8"
-      >
-        <span>GENERATE</span>
-        <svg
-          className="w-5 h-5 ml-2"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
+        <button
+          onClick={handleGenerate}
+          className="w-full mt-8 bg-neon-green hover:bg-transparent text-very-dark hover:text-neon-green border-2 border-neon-green font-mono font-bold p-4 flex items-center justify-center gap-2 transition-all duration-200"
         >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M17 8l4 4m0 0l-4 4m4-4H3"
-          />
-        </svg>
-      </Button>
+          GENERATE
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            className="ml-2"
+          >
+            <path
+              d="M5.106 12L11.106 6L5.106 0"
+              stroke="currentColor"
+              strokeWidth="2"
+            />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 };
