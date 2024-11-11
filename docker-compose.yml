@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  password-generator:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    container_name: password-generator
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "5183:5183"
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
