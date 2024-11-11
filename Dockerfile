@@ -5,6 +5,9 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
+# Install vite globally
+RUN npm install -g vite
+
 COPY . .
 
 EXPOSE 5183
