@@ -10,7 +10,7 @@ services:
     environment:
       - NODE_ENV=development
     networks:
-      - password-generator-network
+      - app-network
 
 networks:
   app-network:
