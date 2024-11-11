@@ -1,4 +1,4 @@
-import { sha1 } from 'crypto-js';
+import sha1 from 'crypto-js/sha1';
 
 // Entropy calculation
 export const calculateEntropy = (password, options) => {
@@ -11,14 +11,14 @@ export const calculateEntropy = (password, options) => {
   const entropy = password.length * Math.log2(Math.max(poolSize, 1));
   return {
     entropy,
-    rating: getEntropyRating(entropy),
+    rating: getEntropyRating(entropy, password, poolSize),
   };
 };
 
-const getEntropyRating = (entropy) => {
-  if (entropy >= 128) return 'STRONG';
-  if (entropy >= 60) return 'MEDIUM';
-  if (entropy >= 36) return 'WEAK';
+const getEntropyRating = (entropy, password, poolSize) => {
+  if (entropy >= 120 || (password.length > 14 && poolSize === 95)) return 'STRONG';
+  if (entropy >= 80 || (password.length >= 12 && poolSize === 95)) return 'MEDIUM';
+  if (entropy >= 32 || (password.length > 10)) return 'WEAK';
   return 'TOO WEAK';
 };
 

@@ -4,6 +4,8 @@ import PasswordOptions from './PasswordOptions';
 import StrengthMeter from './StrengthMeter';
 import { generatePassword } from '../../utils/GeneratePassword';
 import { calculateStrength } from '../../utils/CalculateStrength';
+import { checkPasswordPwned, secureClipboardCopy } from '../../utils/security';
+import ArrowIcon from '../../assets/icons/icon-arrow-right.svg';
 
 const PasswordGenerator = () => {
   const [password, setPassword] = useState('P4$5W0rD');
@@ -15,17 +17,28 @@ const PasswordGenerator = () => {
     numbers: true,
     symbols: false
   });
+  const [pwnedWarning, setPwnedWarning] = useState(null);
 
-  const handleCopy = useCallback(() => {
-    navigator.clipboard.writeText(password);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [password]);
+  const handleCopy = async () => {
+    const success = await secureClipboardCopy(password);
+    if (success) {
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     const newPassword = generatePassword(options);
     setPassword(newPassword);
     setCopied(false);
+    
+    // Check if password has been pwned
+    const pwnedResult = await checkPasswordPwned(newPassword);
+    if (pwnedResult.isPwned) {
+      setPwnedWarning(`This password has appeared in ${pwnedResult.occurrences.toLocaleString()} data breaches`);
+    } else {
+      setPwnedWarning(null);
+    }
   };
 
   const strength = password === 'P4$5W0rD' ? 'EMPTY' : calculateStrength(password, options);
@@ -37,6 +50,12 @@ const PasswordGenerator = () => {
         onCopy={handleCopy}
         copied={copied}
       />
+
+        {pwnedWarning && (
+        <div className="mt-2 text-strength-red text-sm font-mono">
+          ⚠️ {pwnedWarning}
+        </div>
+      )}
 
       <div className="bg-dark-grey p-5">
         <PasswordOptions
@@ -54,20 +73,7 @@ const PasswordGenerator = () => {
           className="w-full mt-8 bg-neon-green hover:bg-transparent text-very-dark hover:text-neon-green border-2 border-neon-green font-mono font-bold p-4 flex items-center justify-center gap-2 transition-all duration-200"
         >
           GENERATE
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="12"
-            height="12"
-            viewBox="0 0 12 12"
-            fill="none"
-            className="ml-2"
-          >
-            <path
-              d="M5.106 12L11.106 6L5.106 0"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-          </svg>
+            <img src={ArrowIcon} alt="Arrow Icon" className="ml-2" />
         </button>
       </div>
     </div>

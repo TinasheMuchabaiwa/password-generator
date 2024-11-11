@@ -1,5 +1,6 @@
 import React from 'react';
 import clsx from 'clsx';
+import CheckIcon from '../../assets/icons/icon-check.svg';
 
 /**
  * Custom checkbox component with styling matching the design
@@ -24,19 +25,7 @@ const Checkbox = ({ label, checked, onChange, className }) => {
           'group-hover:border-neon-green'
         )}>
           {checked && (
-            <svg
-              className="w-4 h-4 text-very-dark"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={3}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
+            <img src={CheckIcon} alt="Check Icon" className="w-3 h-3 m-1" />
           )}
         </div>
       </div>

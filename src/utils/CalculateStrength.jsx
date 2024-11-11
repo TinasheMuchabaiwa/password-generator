@@ -1,3 +1,5 @@
+import { calculateEntropy } from "./security";
+
 /**
  * Calculate password strength based on various criteria
  * @param {string} password - The password to analyze
@@ -9,33 +11,8 @@
  * @returns {string} Strength rating ('TOO WEAK' | 'WEAK' | 'MEDIUM' | 'STRONG')
  */
 export const calculateStrength = (password, options) => {
-    let score = 0;
-  
-    // Check length (0-5 points)
-    const length = password.length;
-    score += Math.min(5, Math.floor(length / 3));
-  
-    // Check character variety (0-8 points)
-    const hasUpper = /[A-Z]/.test(password);
-    const hasLower = /[a-z]/.test(password);
-    const hasNumber = /[0-9]/.test(password);
-    const hasSymbol = /[^A-Za-z0-9]/.test(password);
-  
-    if (hasUpper && options.uppercase) score += 2;
-    if (hasLower && options.lowercase) score += 2;
-    if (hasNumber && options.numbers) score += 2;
-    if (hasSymbol && options.symbols) score += 2;
-  
-    // Check for mixed character types (0-3 points)
-    const typesCount = [hasUpper, hasLower, hasNumber, hasSymbol]
-      .filter(Boolean).length;
-    score += typesCount - 1; // -1 because at least one type is required
-  
-    // Return strength rating based on final score
-    if (score >= 12) return 'STRONG';
-    if (score >= 8) return 'MEDIUM';
-    if (score >= 5) return 'WEAK';
-    return 'TOO WEAK';
+    const { rating } = calculateEntropy(password, options);
+    return rating;
   };
   
   /**
