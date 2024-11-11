@@ -1,0 +1,35 @@
+name: CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Copy SSH key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          known_hosts: ${{ secrets.EC2_HOST }}
+          config: |
+            Host ec2-instance
+              HostName ${{ secrets.EC2_HOST }}
+              User ubuntu
+              IdentityFile ~/.ssh/id_rsa
+
+      - name: Deploy to EC2 and update Docker containers
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            cd ~/password-generator
+            # Pull the latest code from the main branch
+            git pull origin main
+            # Rebuild and restart the containers
+            docker-compose down && docker-compose up --build -d
+          EOF
